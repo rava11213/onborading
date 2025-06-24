@@ -15,6 +15,7 @@ Any changes you make to your deployed app will be automatically pushed to this r
 Your project is live at:
 
 **[https://vercel.com/danielchae06-4520s-projects/v0-react-frontend-with-map](https://vercel.com/danielchae06-4520s-projects/v0-react-frontend-with-map)**
+https://v0-react-frontend-with-map.vercel.app/
 
 ## Build your app
 
