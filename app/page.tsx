@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useEffect, useState } from "react"
 import FloorMap from "@/components/floor-map"
 import Onboarding from "@/components/onboarding"
 import MissingItemsPanel from "@/components/missing-items-panel"
@@ -18,6 +18,17 @@ export default function App() {
     trackedItems: [],
     trackMissingItems: false,
   })
+  const scrollRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (!showOnboarding && scrollRef.current) {
+      const container = scrollRef.current
+      const map = container.querySelector('div.inline-block') as HTMLDivElement | null
+      if (map) {
+        container.scrollLeft = (map.offsetWidth - container.clientWidth) / 2 + 200
+        container.scrollTop = (map.offsetHeight - container.clientHeight) / 2 + 50
+      }
+    }
+  }, [showOnboarding])
 
   const handleOnboardingComplete = (preferences: UserPreferences) => {
     setUserPreferences(preferences)
@@ -29,9 +40,16 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 p-4">
-      <div className="relative">
-        <FloorMap assignedAreas={userPreferences.assignedAreas} trackedItems={userPreferences.trackedItems} />
+    <div className="min-h-screen bg-white p-4 flex items-center justify-center overflow-auto">
+      <div className="flex flex-col items-center w-full">
+        <div
+          ref={scrollRef}
+          className="w-full overflow-x-auto overflow-y-auto max-h-[600px] flex justify-center"
+        >
+          <div className="scale-50 origin-top inline-block min-w-[1600px] min-h-[600px]">
+            <FloorMap assignedAreas={userPreferences.assignedAreas} trackedItems={userPreferences.trackedItems} />
+          </div>
+        </div>
         {userPreferences.trackMissingItems && <MissingItemsPanel />}
       </div>
     </div>
