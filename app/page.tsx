@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from "react"
 import FloorMap from "@/components/floor-map"
 import Onboarding from "@/components/onboarding"
+import OnboardingWelcome from "@/components/onboarding-welcome" 
 import MissingItemsPanel from "@/components/missing-items-panel"
 
 export interface UserPreferences {
@@ -12,7 +13,8 @@ export interface UserPreferences {
 }
 
 export default function App() {
-  const [showOnboarding, setShowOnboarding] = useState(true)
+  const [showWelcome, setShowWelcome] = useState(true) 
+  const [showOnboarding, setShowOnboarding] = useState(false) 
   const [userPreferences, setUserPreferences] = useState<UserPreferences>({
     assignedAreas: [],
     trackedItems: [],
@@ -33,6 +35,10 @@ export default function App() {
   const handleOnboardingComplete = (preferences: UserPreferences) => {
     setUserPreferences(preferences)
     setShowOnboarding(false)
+  }
+
+  if (showWelcome) {
+    return <OnboardingWelcome onStart={() => { setShowWelcome(false); setShowOnboarding(true); }} />
   }
 
   if (showOnboarding) {
